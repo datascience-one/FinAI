@@ -49,8 +49,8 @@ stock2_fetcher/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/stock2-fetcher.git
-cd stock2-fetcher
+git clone https://github.com/your-username/stock.git
+cd stock
 ```
 
 ### 2. Create a virtual environment
