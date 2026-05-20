@@ -1,0 +1,625 @@
+/* ============================================================
+   BLOOMBERG TERMINAL CLONE — Custom CSS
+   Deep charcoal theme with amber/orange accents
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Root Design Tokens ──────────────────────────────────── */
+:root {
+    /* Core backgrounds */
+    --bg-primary:     #0a0a1a;
+    --bg-secondary:   #0f0f23;
+    --bg-panel:       #141428;
+    --bg-panel-hover: #1a1a35;
+    --bg-input:       #1e1e3a;
+
+    /* Accent colors */
+    --amber:          #ff9900;
+    --amber-dim:      #cc7a00;
+    --amber-glow:     rgba(255, 153, 0, 0.15);
+    --orange:         #ff6600;
+    --bloomberg-green: #00d4aa;
+    --bloomberg-red:  #ff4757;
+    --bloomberg-blue: #3b82f6;
+    --bloomberg-cyan: #00e5ff;
+
+    /* Text */
+    --text-primary:   #e8e8f0;
+    --text-secondary: #8888aa;
+    --text-muted:     #555577;
+    --text-amber:     #ff9900;
+
+    /* Borders */
+    --border-color:   #2a2a4a;
+    --border-active:  #ff990055;
+
+    /* Typography */
+    --font-mono:      'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    --font-sans:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Spacing */
+    --gap:            8px;
+    --radius:         6px;
+    --radius-sm:      4px;
+}
+
+/* ── Global Resets ───────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar Styling ───────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ── Main Layout Grid ────────────────────────────────────── */
+.bloomberg-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: var(--gap);
+    gap: var(--gap);
+    background: var(--bg-primary);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--gap);
+    flex: 1;
+    min-height: 0;
+}
+
+/* ── Panel Base ──────────────────────────────────────────── */
+.panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.panel:hover {
+    border-color: var(--border-active);
+    box-shadow: 0 0 20px rgba(255, 153, 0, 0.05);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: linear-gradient(180deg, #1a1a35 0%, var(--bg-panel) 100%);
+    border-bottom: 1px solid var(--border-color);
+    min-height: 36px;
+}
+
+.panel-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.panel-subtitle {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.panel-body {
+    flex: 1;
+    padding: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+/* ── Top Bar (Command Line) ──────────────────────────────── */
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    background: linear-gradient(90deg, #0f0f23 0%, #141428 50%, #0f0f23 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    min-height: 44px;
+}
+
+.topbar-brand {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.topbar-separator {
+    width: 1px;
+    height: 24px;
+    background: var(--border-color);
+}
+
+.command-input {
+    flex: 1;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--amber-dim) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--amber) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+    outline: none !important;
+    transition: box-shadow 0.2s ease;
+}
+
+.command-input:focus {
+    box-shadow: 0 0 12px var(--amber-glow) !important;
+    border-color: var(--amber) !important;
+}
+
+.command-input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.topbar-clock {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bloomberg-cyan);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+.topbar-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bloomberg-green);
+    box-shadow: 0 0 8px rgba(0, 212, 170, 0.6);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(0, 212, 170, 0.6); }
+    50%      { opacity: 0.5; box-shadow: 0 0 16px rgba(0, 212, 170, 0.3); }
+}
+
+.status-text {
+    font-size: 10px;
+    color: var(--bloomberg-green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ── Ticker Tape ─────────────────────────────────────────── */
+.ticker-tape-wrapper {
+    overflow: hidden;
+    background: linear-gradient(90deg, var(--bg-secondary) 0%, var(--bg-panel) 10%, var(--bg-panel) 90%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 6px 0;
+    position: relative;
+}
+
+.ticker-tape {
+    display: flex;
+    gap: 32px;
+    animation: scroll-tape 30s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+}
+
+@keyframes scroll-tape {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+}
+
+.ticker-symbol {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 11px;
+}
+
+.ticker-price {
+    color: var(--text-primary);
+    font-size: 11px;
+}
+
+.ticker-change-up {
+    color: var(--bloomberg-green);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.ticker-change-down {
+    color: var(--bloomberg-red);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.ticker-divider {
+    color: var(--text-muted);
+    font-size: 10px;
+}
+
+/* ── Index Cards ─────────────────────────────────────────── */
+.index-cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--gap);
+    padding: 4px 0;
+}
+
+.index-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    transition: all 0.2s ease;
+    cursor: default;
+}
+
+.index-card:hover {
+    border-color: var(--amber-dim);
+    background: var(--bg-panel-hover);
+}
+
+.index-card-name {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.index-card-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.index-card-change {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.change-positive {
+    color: var(--bloomberg-green) !important;
+}
+
+.change-negative {
+    color: var(--bloomberg-red) !important;
+}
+
+/* ── Data Table (Watchlist) ──────────────────────────────── */
+.dash-spreadsheet-container .dash-spreadsheet-inner {
+    background: var(--bg-panel) !important;
+}
+
+.dash-table-container .dash-spreadsheet-container {
+    background: transparent !important;
+}
+
+.dash-header {
+    background: var(--bg-secondary) !important;
+    color: var(--amber) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border-bottom: 1px solid var(--amber-dim) !important;
+    padding: 8px 12px !important;
+}
+
+.dash-cell {
+    background: var(--bg-panel) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 11px !important;
+    border-bottom: 1px solid #1e1e35 !important;
+    padding: 6px 12px !important;
+    transition: background 0.15s ease;
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner table {
+    border-collapse: collapse !important;
+}
+
+tr:hover td.dash-cell {
+    background: var(--bg-panel-hover) !important;
+}
+
+/* ── News Feed ───────────────────────────────────────────── */
+.news-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #1a1a30;
+    transition: background 0.15s ease;
+    cursor: default;
+}
+
+.news-item:hover {
+    background: var(--bg-panel-hover);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-timestamp {
+    font-size: 10px;
+    color: var(--bloomberg-cyan);
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.news-headline {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.news-source-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(255, 153, 0, 0.15);
+    color: var(--amber);
+    margin-right: 6px;
+}
+
+.news-category-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--bloomberg-blue);
+}
+
+/* ── Market Stats ────────────────────────────────────────── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 4px 0;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    transition: border-color 0.2s ease;
+}
+
+.stat-card:hover {
+    border-color: var(--amber-dim);
+}
+
+.stat-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.stat-change {
+    font-size: 10px;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* ── Plotly Chart Overrides ──────────────────────────────── */
+.js-plotly-plot .plotly .modebar {
+    top: 4px !important;
+    right: 4px !important;
+}
+
+.js-plotly-plot .plotly .modebar-btn {
+    font-size: 14px !important;
+}
+
+.dash-graph {
+    height: 100% !important;
+}
+
+/* ── Dropdown Overrides ──────────────────────────────────── */
+.Select-control {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-primary) !important;
+}
+
+.Select-menu-outer {
+    background: var(--bg-panel) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.Select-option {
+    background: var(--bg-panel) !important;
+    color: var(--text-primary) !important;
+}
+
+.Select-option:hover {
+    background: var(--bg-panel-hover) !important;
+}
+
+.Select-value-label {
+    color: var(--text-primary) !important;
+}
+
+.Select-placeholder {
+    color: var(--text-muted) !important;
+}
+
+.VirtualizedSelectOption {
+    background: var(--bg-panel) !important;
+    color: var(--text-primary) !important;
+}
+
+.VirtualizedSelectFocusedOption {
+    background: var(--bg-panel-hover) !important;
+}
+
+/* ── Dash Dropdown Component ─────────────────────────────── */
+.dash-dropdown .Select-control {
+    background: var(--bg-input) !important;
+    border-color: var(--border-color) !important;
+}
+
+.dash-dropdown .Select-value-label,
+.dash-dropdown .Select-input input {
+    color: var(--text-primary) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 11px !important;
+}
+
+/* ── Chart Controls Row ──────────────────────────────────── */
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+}
+
+.chart-controls .dash-dropdown {
+    min-width: 120px;
+}
+
+.timeframe-btn {
+    padding: 3px 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.timeframe-btn:hover {
+    border-color: var(--amber-dim);
+    color: var(--text-primary);
+}
+
+.timeframe-btn.active {
+    background: var(--amber-glow);
+    border-color: var(--amber);
+    color: var(--amber);
+}
+
+/* ── Update Pulse Animation ──────────────────────────────── */
+@keyframes data-pulse {
+    0%   { background: transparent; }
+    50%  { background: rgba(255, 153, 0, 0.08); }
+    100% { background: transparent; }
+}
+
+.data-updated {
+    animation: data-pulse 0.6s ease-out;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        flex-wrap: wrap;
+    }
+    .index-cards-row {
+        grid-template-columns: 1fr 1fr;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Utility Classes ─────────────────────────────────────── */
+.text-green  { color: var(--bloomberg-green) !important; }
+.text-red    { color: var(--bloomberg-red) !important; }
+.text-amber  { color: var(--amber) !important; }
+.text-cyan   { color: var(--bloomberg-cyan) !important; }
+.text-blue   { color: var(--bloomberg-blue) !important; }
+.text-muted  { color: var(--text-muted) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.fw-bold     { font-weight: 600 !important; }
+.mono        { font-family: var(--font-mono) !important; }
