@@ -664,21 +664,39 @@ class Corperate_Announcements:
         return df, "circulars"
 
     def live_price(self, symbol):
-        base_url = "https://www.nseindia.com/api/quote-equity"
-        params = {"symbol": symbol}
+        base_url = "https://www.nseindia.com/api/NextApi/apiClient/GetQuoteApi"
+
+        params = {
+            "functionName": "getSymbolData",
+            "marketType": "N",
+            "series": "EQ",
+            "symbol": symbol
+        }
+
         query = urllib.parse.urlencode(params)
         url = f"{base_url}?{query}"
+
         data = self._nsefetch(url)
-        if "priceInfo" in data:
-          return {
-              "symbol": symbol,
-              "lastPrice": data["priceInfo"].get("lastPrice"),
-              "open": data["priceInfo"].get("open"),
-              "high": data["priceInfo"].get("intraDayHighLow", {}).get("max"),
-              "low": data["priceInfo"].get("intraDayHighLow", {}).get("min"),
-              "previousClose": data["priceInfo"].get("previousClose")
-              }
-        return None
+
+        if "equityResponse" not in data or len(data["equityResponse"]) == 0:
+            return None
+
+        equity = data["equityResponse"][0]
+
+        meta = equity.get("metaData", {})
+        order = equity.get("orderBook", {})
+
+        return {
+            "symbol": meta.get("symbol"),
+            "lastPrice": order.get("lastPrice"),
+            "open": meta.get("open"),
+            "high": meta.get("dayHigh"),
+            "low": meta.get("dayLow"),
+            "previousClose": meta.get("previousClose"),
+        }
+
+
+    
     def indices(self):
 
         url = "https://www.nseindia.com/api/allIndices"
@@ -760,18 +778,20 @@ class Corperate_Announcements:
         url = "https://www.nseindia.com/api/fiidiiTradeReact"
         return self._nsefetch(url)
 
-    def option_chain(self):
-        url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY"
-        return self._nsefetch(url)
+    # def option_chain(self):
+    #     url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY"
+    #     return self._nsefetch(url)
 
     def new_highs(self):
         url = "https://www.nseindia.com/api/live-analysis-52Week"
         return self._nsefetch(url)
+
+    
     def advance_decline(self):
-
-        url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-
+        url = "https://www.nseindia.com/api/NextApi/apiClient/marketWatchApi?functionName=getIndicesData&symbol=NIFTY%2050"
         return self._nsefetch(url)
+
+    
     def usd_inr(self):
 
         url="https://api.exchangerate-api.com/v4/latest/USD"
@@ -819,6 +839,17 @@ class Corperate_Announcements:
 
         self.session.get("https://www.nseindia.com", headers=self.headers)
 
-        url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY"
+        # Step 1: Get available expiries
+        info = self._nsefetch(
+            "https://www.nseindia.com/api/option-chain-contract-info?symbol=NIFTY"
+        )
+
+        expiry = info["expiryDates"][0]
+
+        # Step 2: Fetch option chain for nearest expiry
+        url = (
+            "https://www.nseindia.com/api/option-chain-v3"
+            f"?type=Indices&symbol=NIFTY&expiry={expiry}"
+        )
 
         return self._nsefetch(url)

@@ -238,7 +238,7 @@ class _DataCache:
             adv = 0
             decl = 0
 
-            for row in adv_data.get("data", []):
+            for row in adv_data.get("data", {}).get("data", []):
 
                 if row.get("pChange",0) > 0:
                     adv += 1
